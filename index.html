@@ -516,17 +516,10 @@
             to { transform: translateX(0); }
         }
 
-        #list-panel.show {
-            display: flex !important;
-        }
+        #list-panel.show { display: flex !important; }
+        #bm-panel.show { display: flex !important; }
 
-        #bm-panel.show {
-            display: flex !important;
-        }
-
-        .list-group {
-            margin-bottom: 16px;
-        }
+        .list-group { margin-bottom: 16px; }
 
         .list-group-title {
             font-weight: 700;
@@ -558,12 +551,993 @@
             transform: translateX(4px);
         }
 
-        .list-item-content {
-            flex: 1;
-            min-width: 0;
+        .list-item-content { flex: 1; min-width: 0; }
+        .list-item-q { font-weight: 600; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+        .list-item-tag { font-size: 10px; color: var(--primary); font-weight: 700; }
+        .list-item-arrow { color: var(--muted); margin-left: 8px; flex-shrink: 0; }
+
+        .tag-filter {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .list-item-q {
+        .tag-filter:hover, .tag-filter.active {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .advanced-filters {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .filter-label { font-size: 12px; font-weight: 700; color: var(--primary); min-width: 50px; }
+
+        .sort-btn {
+            padding: 6px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sort-btn:hover, .sort-btn.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        .category-desc {
+            background: var(--primary-soft);
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
             font-size: 13px;
-            color: var(--text
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .category-desc-title { font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+
+        .bm-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bm-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .bm-tag { font-size: 10px; color: var(--primary); font-weight: 700; margin-bottom: 6px; }
+        .bm-q { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+        .bm-a { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .bm-date { font-size: 10px; color: var(--muted); margin-top: 8px; }
+        .bm-remove { float: right; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; transition: color 0.2s; }
+        .bm-remove:hover { color: #ef4444; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+        .empty-state p:first-child { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+        .empty-state p { font-size: 13px; }
+
+        /* ===== 오버레이 ===== */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--surface);
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 24px 16px;
+            transition: background 0.3s;
+        }
+
+        .overlay.show { display: flex; }
+
+        .overlay-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .overlay-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+
+        .stat-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-val { font-size: 22px; font-weight: 800; color: var(--primary); }
+        .stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
+
+        .chart-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .chart-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+
+        .log-list {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
+
+        .log-item {
+            padding: 10px 14px;
+            font-size: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-item:last-child { border-bottom: none; }
+        .log-cnt { background: #fee2e2; color: #ef4444; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 10px; }
+
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .upload-zone:hover { border-color: var(--primary); background: var(--primary-soft); }
+        .upload-zone p { font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 6px; }
+
+        .btn-row { display: flex; gap: 8px; margin-top: 8px; }
+
+        .admin-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .admin-btn.yellow { color: #d97706; border-color: #fcd34d; }
+        .admin-btn.yellow:hover { background: #fffbeb; }
+        .admin-btn.blue { color: var(--primary); border-color: #bfdbfe; }
+        .admin-btn.blue:hover { background: var(--primary-soft); }
+        .admin-btn.red { color: #ef4444; border-color: #fee2e2; }
+        .admin-btn.red:hover { background: #fef2f2; }
+
+        .help-section { margin-bottom: 20px; }
+        .help-section-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+
+        .help-item {
+            background: var(--bg);
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+        }
+
+        .help-item-title { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 3px; }
+        .help-item-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+        /* ===== 토스트 ===== */
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast.show { opacity: 1; }
+
+        .pw-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 40px 20px;
+        }
+
+        .pw-section h2 { font-size: 18px; font-weight: 700; color: var(--text); }
+
+        .pw-input {
+            width: 100%;
+            max-width: 260px;
+            padding: 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .pw-input:focus { border-color: var(--primary); }
+
+        .pw-btn {
+            width: 100%;
+            max-width: 260px;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="toast" id="toast"></div>
+    <div class="autocomplete" id="autocomplete"></div>
+
+    <div class="header">
+        <div class="header-left">
+            <div class="avatar"><i data-lucide="shield-check" style="width:18px;height:18px;"></i></div>
+            <div class="bot-info"><h1>인사업무봇</h1></div>
+        </div>
+        <div class="header-right">
+            <button class="icon-btn" onclick="showHelp()" title="도움말"><i data-lucide="help-circle" style="width:16px;height:16px;"></i></button>
+            <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="다크모드"><i data-lucide="moon" id="theme-icon" style="width:16px;height:16px;"></i></button>
+            <button class="icon-btn" onclick="clearChat()" title="채팅 초기화"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button>
+            <button class="icon-btn" onclick="toggleList()" title="목록"><i data-lucide="menu" style="width:16px;height:16px;"></i></button>
+            <button class="icon-btn" onclick="toggleBookmark()" title="즐겨찾기"><i data-lucide="star" style="width:16px;height:16px;"></i></button>
+            <button class="icon-btn" onclick="openAdmin()" title="관리자"><i data-lucide="settings" style="width:16px;height:16px;"></i></button>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="chips" id="chips"></div>
+        <div class="chat" id="chat"></div>
+
+        <div id="list-panel">
+            <div id="list-tags-filter" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border);"></div>
+            <div class="advanced-filters">
+                <div class="filter-group">
+                    <span class="filter-label">정렬:</span>
+                    <button class="sort-btn active" onclick="setSortOrder('popular')">인기도</button>
+                    <button class="sort-btn" onclick="setSortOrder('name')">가나다</button>
+                    <button class="sort-btn" onclick="setSortOrder('recent')">최신순</button>
+                </div>
+                <div class="filter-group">
+                    <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); cursor:pointer;">
+                        <input type="checkbox" id="bookmark-only" onchange="renderList()" style="cursor:pointer;">즐겨찾기만 보기
+                    </label>
+                </div>
+            </div>
+            <div id="category-desc-box"></div>
+            <div id="list-container"></div>
+        </div>
+
+        <div id="bm-panel"></div>
+    </div>
+
+    <div class="input-area" id="input-area">
+        <div class="input-row">
+            <input type="text" id="user-input" placeholder="질문을 입력하세요..." oninput="onInput(this)" onkeypress="if(event.keyCode===13) send()">
+            <button class="send-btn" onclick="send()"><i data-lucide="send-horizontal" style="width:16px;height:16px;"></i></button>
+        </div>
+    </div>
+
+    <div class="overlay" id="admin-overlay">
+        <div class="overlay-title">
+            <i data-lucide="settings" style="width:20px;height:20px;"></i> 관리자 패널
+            <button class="overlay-close" onclick="closeOverlay('admin-overlay')">×</button>
+        </div>
+        <div class="pw-section" id="pw-section">
+            <h2>🔐 관리자 인증</h2>
+            <input class="pw-input" type="password" id="admin-pw" placeholder="비밀번호 입력" onkeypress="if(event.keyCode===13) checkPw()">
+            <button class="pw-btn" onclick="checkPw()">인증하기</button>
+        </div>
+        <div id="admin-dash" style="display:none;">
+            <div class="stat-grid">
+                <div class="stat-box"><div class="stat-val" id="s-kb">0</div><div class="stat-lbl">등록 규정</div></div>
+                <div class="stat-box"><div class="stat-val" id="s-missing">0</div><div class="stat-lbl">미답변</div></div>
+                <div class="stat-box"><div class="stat-val" id="s-total">0</div><div class="stat-lbl">총 검색</div></div>
+                <div class="stat-box"><div class="stat-val" id="s-rate" style="color:#10b981;">0%</div><div class="stat-lbl">성공률</div></div>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">🔥 TOP 5 인기 검색어</div>
+                <canvas id="chart-top" height="140"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">📂 카테고리 분포</div>
+                <canvas id="chart-cat" height="140"></canvas>
+            </div>
+            <p style="font-size:12px; font-weight:700; color:var(--text); margin-bottom:6px;">⚠️ 미답변 질문 로그</p>
+            <div class="log-list" id="log-list"></div>
+            <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+                <i data-lucide="file-up" style="color:var(--primary); width:24px; height:24px;"></i>
+                <p>rules.xlsx 업데이트</p>
+            </div>
+            <input type="file" id="file-input" style="display:none;" accept=".xlsx" onchange="uploadFile(this)">
+            <div class="btn-row">
+                <button class="admin-btn yellow" onclick="resetMissing()">🗑️ 미답변 초기화</button>
+                <button class="admin-btn blue" onclick="resetSearch()">🔍 검색 초기화</button>
+            </div>
+            <div class="btn-row">
+                <button class="admin-btn red" onclick="resetAll()" style="flex:1;">🗑️ 전체 초기화</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="help-overlay">
+        <div class="overlay-title">
+            <i data-lucide="book-open" style="width:20px;height:20px;"></i> 사용 가이드
+            <button class="overlay-close" onclick="closeOverlay('help-overlay')">×</button>
+        </div>
+        </div>
+</div>
+
+<script>
+    // ===== [추가] 모바일 실시간 오류 추적기 =====
+    window.onerror = function(msg, url, line, col, error) {
+        alert("🚨 모바일 구동 오류 발생!\n\n메시지: " + msg + "\n줄 번호: " + line + "\n파일: " + url);
+        return false;
+    };
+
+    lucide.createIcons();
+
+    // ===== 전역 변수 =====
+    let kb = [], missingLogs = {}, searchLogs = {}, bookmarks = [], totalSearches = 0;
+    let chatHistory = [], feedbackLogs = {};
+    let topChart = null, catChart = null;
+    let listSelectedTag = null, listSortOrder = 'popular';
+    let fuseIndex = null;
+    const PW = "admin1234";
+
+    // ===== 초기화 =====
+    window.onload = () => {
+        lucide.createIcons();
+        const theme = localStorage.getItem('wb_theme') || 'light';
+        if (theme === 'dark') setTheme('dark');
+
+        const savedKb = localStorage.getItem('wb_kb');
+        const savedMissing = localStorage.getItem('wb_missing');
+        const savedSearch = localStorage.getItem('wb_search');
+        const savedBm = localStorage.getItem('wb_bm');
+        const savedTotal = localStorage.getItem('wb_total');
+        const savedChat = localStorage.getItem('wb_chat');
+        const savedFeedback = localStorage.getItem('wb_feedback');
+
+        if (savedKb) {
+            kb = JSON.parse(savedKb);
+            initFuseIndex();
+        }
+        if (savedMissing) missingLogs = JSON.parse(savedMissing);
+        if (savedSearch) searchLogs = JSON.parse(savedSearch);
+        if (savedBm) bookmarks = JSON.parse(savedBm);
+        if (savedTotal) totalSearches = parseInt(savedTotal) || 0;
+        if (savedChat) chatHistory = JSON.parse(savedChat);
+        if (savedFeedback) feedbackLogs = JSON.parse(savedFeedback);
+
+        updateBmCount();
+        renderChips();
+        
+        if (chatHistory.length > 0) {
+            renderChatHistory();
+        } else {
+            showGuide();
+        }
+
+        const githubUser = 'lee610908';
+        const githubRepo = 'insabot';
+        const fileUrl = `https://raw.githubusercontent.com/${githubUser}/${githubRepo}/main/rules.xlsx?t=${Date.now()}`;
+        
+        fetch(fileUrl)
+            .then(r => {
+                if (!r.ok) throw new Error('네트워크 404/500 에러');
+                return r.arrayBuffer();
+            })
+            .then(buf => {
+                parseExcel(buf);
+                if (document.getElementById('list-panel').classList.contains('show')) {
+                    renderList();
+                }
+            })
+            .catch(err => {
+                console.error("실시간 데이터 서버 동기화 실패:", err);
+            });
+    };
+
+    // ===== Fuse.js 인덱스 =====
+    function initFuseIndex() {
+        if (typeof Fuse !== 'undefined' && kb.length > 0) {
+            fuseIndex = new Fuse(kb, {
+                keys: ['q', 'tag'],
+                threshold: 0.3,
+                includeScore: true,
+                minMatchCharLength: 2
+            });
+        }
+    }
+
+    // ===== 대화 기록 복원 복구 (중첩 레이아웃 완전 해결) =====
+    function renderChatHistory() {
+        const chat = document.getElementById('chat');
+        chat.innerHTML = '';
+        chatHistory.forEach(msg => {
+            const time = msg.time || new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            // 이미 답변 카드 HTML이 완성형으로 들어있는 경우 구조 중첩 방지
+            if (msg.text.includes('class="card"') || msg.text.includes('card-body')) {
+                chat.insertAdjacentHTML('beforeend', `
+                    <div class="msg ${msg.role}" style="max-width:95%;">
+                        ${msg.text}
+                        <span class="msg-time">${time}</span>
+                    </div>
+                `);
+            } else {
+                chat.insertAdjacentHTML('beforeend', `
+                    <div class="msg ${msg.role}">
+                        <div class="bubble">${msg.text}</div>
+                        <span class="msg-time">${time}</span>
+                    </div>
+                `);
+            }
+        });
+        setTimeout(() => { chat.scrollTop = chat.scrollHeight; }, 0);
+        lucide.createIcons();
+    }
+
+    // ===== 테마 =====
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme');
+        setTheme(current === 'dark' ? 'light' : 'dark');
+    }
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('wb_theme', theme);
+        const icon = document.getElementById('theme-icon');
+        if (icon) icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+        lucide.createIcons();
+    }
+
+    // ===== 뷰 전환 =====
+    function switchView(view) {
+        document.getElementById('list-panel').classList.remove('show');
+        document.getElementById('bm-panel').classList.remove('show');
+        document.getElementById('chat').style.display = 'flex';
+        document.getElementById('chips').style.display = 'flex';
+        document.getElementById('input-area').style.display = 'block';
+        document.getElementById('autocomplete').style.display = 'none';
+    }
+
+    function showHelp() { document.getElementById('help-overlay').classList.add('show'); lucide.createIcons(); }
+    function openAdmin() { document.getElementById('pw-section').style.display = 'flex'; document.getElementById('admin-dash').style.display = 'none'; document.getElementById('admin-pw').value = ''; document.getElementById('admin-overlay').classList.add('show'); }
+    function closeOverlay(id) { document.getElementById(id).classList.remove('show'); }
+
+    function checkPw() {
+        if (document.getElementById('admin-pw').value === PW) {
+            document.getElementById('pw-section').style.display = 'none';
+            document.getElementById('admin-dash').style.display = 'block';
+            renderAdmin();
+            lucide.createIcons();
+        } else {
+            toast('❌ 비밀번호가 틀렸습니다.');
+        }
+    }
+
+    function clearChat() {
+        if (confirm('⚠️ 채팅 기록을 모두 삭제하시겠습니까?')) {
+            chatHistory = [];
+            localStorage.setItem('wb_chat', '[]');
+            document.getElementById('chat').innerHTML = '';
+            showGuide();
+            toast('🗑️ 채팅이 초기화되었습니다.');
+        }
+    }
+
+    function toggleList() {
+        const listPanel = document.getElementById('list-panel');
+        const bmPanel = document.getElementById('bm-panel');
+        if (listPanel.classList.contains('show')) {
+            listPanel.classList.remove('show');
+        } else {
+            bmPanel.classList.remove('show');
+            listPanel.classList.add('show');
+            renderList();
+        }
+    }
+
+    function toggleBookmark() {
+        const listPanel = document.getElementById('list-panel');
+        const bmPanel = document.getElementById('bm-panel');
+        if (bmPanel.classList.contains('show')) {
+            bmPanel.classList.remove('show');
+        } else {
+            listPanel.classList.remove('show');
+            bmPanel.classList.add('show');
+            renderBookmarks();
+        }
+    }
+
+    function showGuide() {
+        const welcomeText = `
+            반갑습니다! <b>인사업무봇</b>입니다. 🤖<br>
+            자주 묻는 질문을 클릭하거나 직접 입력해 보세요!
+            <div class="guide-list">
+                <button class="guide-btn" onclick="quickAsk('신인 등록 자격')"><i data-lucide="user-check" style="width:13px;height:13px;"></i> 신인 등록 자격이 궁금해요</button>
+                <button class="guide-btn" onclick="quickAsk('이직 횟수 제한')"><i data-lucide="alert-circle" style="width:13px;height:13px;"></i> 이직 횟수 제한이 있나요?</button>
+                <button class="guide-btn" onclick="quickAsk('재입사 기준')"><i data-lucide="refresh-cw" style="width:13px;height:13px;"></i> 퇴사 후 재입사 기준은?</button>
+            </div>
+        `;
+        addMsg('bot', welcomeText);
+    }
+
+    function quickAsk(text) {
+        switchView('chat');
+        document.getElementById('user-input').value = text;
+        setTimeout(() => send(), 100);
+    }
+
+    function onInput(input) {
+        const val = input.value.trim();
+        const ac = document.getElementById('autocomplete');
+        if (val.length < 1) { ac.style.display = 'none'; return; }
+
+        const matches = kb
+            .map(item => ({ item, score: similarity(val.toLowerCase().replace(/\s/g,''), item.q.toLowerCase().replace(/\s/g,'')) }))
+            .filter(m => m.score >= 50)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 5);
+
+        if (matches.length > 0) {
+            ac.innerHTML = matches.map(m => `
+                <div class="ac-item" onclick="quickAsk('${m.item.q.replace(/'/g,"\\'")}')">
+                    <span>${highlight(m.item.q, val)}</span>
+                    <span class="ac-score">${m.score}% 일치</span>
+                </div>
+            `).join('');
+            ac.style.display = 'block';
+        } else {
+            ac.style.display = 'none';
+        }
+    }
+
+    function send() {
+        const input = document.getElementById('user-input');
+        const text = input.value.trim();
+        if (!text) return;
+        document.getElementById('autocomplete').style.display = 'none';
+        addMsg('user', text);
+        input.value = '';
+        totalSearches++;
+        localStorage.setItem('wb_total', totalSearches);
+        setTimeout(() => search(text), 400);
+    }
+
+    function levenshtein(a, b) {
+        const m = a.length, n = b.length;
+        const dp = Array(n + 1).fill(null).map((_, i) => Array(m + 1).fill(0).map((_, j) => j === 0 ? i : 0));
+        for (let j = 1; j <= m; j++) dp[0][j] = j;
+        for (let i = 1; i <= n; i++) for (let j = 1; j <= m; j++)
+            dp[i][j] = a[j-1] === b[i-1] ? dp[i-1][j-1] : Math.min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1;
+        return dp[n][m];
+    }
+
+    function similarity(a, b) {
+        const max = Math.max(a.length, b.length);
+        if (!max) return 100;
+        return Math.round((1 - levenshtein(a, b) / max) * 100);
+    }
+
+    function search(query) {
+        const q = query.toLowerCase().replace(/\s/g, '');
+        let results = [];
+
+        if (fuseIndex) {
+            results = fuseIndex.search(query).map(r => ({
+                item: r.item,
+                score: Math.round((1 - r.score) * 100)
+            }));
+        }
+        
+        if (results.length === 0) {
+            kb.forEach(item => {
+                const iq = item.q.toLowerCase().replace(/\s/g, '');
+                const it = (item.tag || '').toLowerCase();
+                if (iq.includes(q)) results.push({ item, score: 100 });
+                else if (it.includes(q)) results.push({ item, score: 90 });
+                else if (iq.includes(q.substring(0, 2))) results.push({ item, score: 80 });
+                else {
+                    const s = similarity(q, iq);
+                    if (s >= 70) results.push({ item, score: s });
+                }
+            });
+        }
+
+        results.sort((a, b) => b.score - a.score);
+
+        if (results.length > 0) {
+            const best = results[0];
+            searchLogs[best.item.q] = (searchLogs[best.item.q] || 0) + 1;
+            localStorage.setItem('wb_search', JSON.stringify(searchLogs));
+
+            const msg = best.score < 100 ? `<b>'${query}'</b>와 유사한 규정을 찾았습니다. (일치도: ${best.score}%)` : "규정집에서 가장 정확한 답변을 찾았습니다.";
+            addBotCard(msg, best.item, query);
+
+            if (results.length > 1 && results[1].score >= 70) {
+                setTimeout(() => {
+                    let suggest = "혹시 이것도 도움이 될까요?<br><br>";
+                    results.slice(1, 4).forEach((r, i) => {
+                        suggest += `<div class="suggest-card" onclick="quickAsk('${r.item.q.replace(/'/g, "\\'")}')">
+                            <div class="suggest-title">${i+1}. ${r.item.q}</div>
+                            <div class="suggest-tag">#${r.item.tag} (${r.score}% 일치)</div>
+                        </div>`;
+                    });
+                    addMsg('bot', suggest);
+                }, 1500);
+            }
+        } else {
+            missingLogs[query] = (missingLogs[query] || 0) + 1;
+            localStorage.setItem('wb_missing', JSON.stringify(missingLogs));
+            const fallback = kb.filter(i => i.q.includes(query.substring(0, 2))).slice(0, 3);
+            if (fallback.length) {
+                let msg = `'${query}'와 관련하여 이런 규정은 어떠신가요?<br><br>`;
+                fallback.forEach((f, i) => msg += `${i+1}. <b>${f.q}</b><br>`);
+                addMsg('bot', msg);
+            } else {
+                addMsg('bot', `죄송합니다. 해당 질문에 대한 규정을 아직 찾지 못했습니다.<br>관리자 로그에 기록되어 추후 업데이트될 예정입니다. 📝`);
+            }
+        }
+    }
+
+    function addMsg(role, text) {
+        const chat = document.getElementById('chat');
+        const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        
+        chatHistory.push({ role, text, time });
+        localStorage.setItem('wb_chat', JSON.stringify(chatHistory));
+        
+        chat.insertAdjacentHTML('beforeend', `
+            <div class="msg ${role}">
+                <div class="bubble">${text}</div>
+                <span class="msg-time">${time}</span>
+            </div>
+        `);
+        setTimeout(() => { chat.scrollTop = chat.scrollHeight; }, 0);
+        lucide.createIcons();
+    }
+
+    function addBotCard(text, item, query) {
+        const chat = document.getElementById('chat');
+        const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        const id = 'c' + Date.now();
+        const isBm = bookmarks.some(b => b.q === item.q);
+        const hlA = query ? highlight(item.a, query) : item.a;
+        const hlQ = query ? highlight(item.q, query) : item.q;
+
+        const cardInnerHtml = `
+            <div class="bubble">${text}</div>
+            <div class="card">
+                <div class="card-tag">#${item.tag}</div>
+                <div class="card-body">
+                    <div class="card-q">❓ ${hlQ}</div>
+                    <div class="card-a">${hlA}</div>
+                    <div class="card-actions">
+                        <div class="feedback">
+                            <button class="fb-btn" onclick="recordFeedback('${item.q}', true)"><i data-lucide="thumbs-up" style="width:11px;height:11px;"></i> 도움됨</button>
+                            <button class="fb-btn" onclick="recordFeedback('${item.q}', false)"><i data-lucide="thumbs-down" style="width:11px;height:11px;"></i> 부족함</button>
+                        </div>
+                        <div class="action-btns">
+                            <button class="action-btn" id="copy-${id}" onclick="copyCard('${id}', \`${item.q.replace(/`/g,'\\`')}\`, \`${item.a.replace(/`/g,'\\`')}\`)"><i data-lucide="copy" style="width:11px;height:11px;"></i> 복사</button>
+                            <button class="action-btn ${isBm ? 'saved' : ''}" id="bm-${id}" onclick="toggleBm('${id}', \`${item.q.replace(/`/g,'\\`')}\`, \`${item.a.replace(/`/g,'\\`')}\`, \`${item.tag.replace(/`/g,'\\`')}\`)"><i data-lucide="star" style="width:11px;height:11px;"></i> ${isBm ? '저장됨' : '저장'}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        chatHistory.push({ role: 'bot', text: cardInnerHtml, time });
+        localStorage.setItem('wb_chat', JSON.stringify(chatHistory));
+
+        chat.insertAdjacentHTML('beforeend', `
+            <div class="msg bot" id="${id}">
+                ${cardInnerHtml}
+                <span class="msg-time">${time}</span>
+            </div>
+        `);
+        setTimeout(() => { chat.scrollTop = chat.scrollHeight; }, 0);
+        lucide.createIcons();
+    }
+
+    function recordFeedback(question, isPositive) {
+        if (!feedbackLogs[question]) feedbackLogs[question] = { good: 0, bad: 0 };
+        if (isPositive) { feedbackLogs[question].good++; toast('👍 감사합니다! 😊'); } 
+        else { feedbackLogs[question].bad++; toast('👎 보완하도록 하겠습니다! 🫡'); }
+        localStorage.setItem('wb_feedback', JSON.stringify(feedbackLogs));
+    }
+
+    function copyCard(id, q, a) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(`❓ ${q}\n\n${a}`).then(() => {
+                const btn = document.getElementById(`copy-${id}`);
+                if (btn) { btn.innerHTML = '<i data-lucide="check" style="width:11px;height:11px;"></i> 복사됨'; btn.classList.add('copied'); lucide.createIcons(); }
+                toast('📋 복사되었습니다!');
+                setTimeout(() => { if (btn) { btn.innerHTML = '<i data-lucide="copy" style="width:11px;height:11px;"></i> 복사'; btn.classList.remove('copied'); lucide.createIcons(); } }, 2000);
+            });
+        } else {
+            toast('⚠️ 보안 정책으로 인해 복사를 지원하지 않는 브라우저입니다.');
+        }
+    }
+
+    function toggleBm(id, q, a, tag) {
+        const idx = bookmarks.findIndex(b => b.q === q);
+        const btn = document.getElementById(`bm-${id}`);
+        if (idx > -1) {
+            bookmarks.splice(idx, 1);
+            if (btn) { btn.innerHTML = '<i data-lucide="star" style="width:11px;height:11px;"></i> 저장'; btn.classList.remove('saved'); lucide.createIcons(); }
+            toast('제거되었습니다.');
+        } else {
+            bookmarks.push({ q, a, tag, date: new Date().toLocaleDateString() });
+            if (btn) { btn.innerHTML = '<i data-lucide="star" style="width:11px;height:11px;"></i> 저장됨'; btn.classList.add('saved'); lucide.createIcons(); }
+            toast('⭐ 즐겨찾기에 추가되었습니다!');
+        }
+        localStorage.setItem('wb_bm', JSON.stringify(bookmarks));
+        updateBmCount();
+    }
+
+    function updateBmCount() {}
+
+    function renderBookmarks() {
+        const panel = document.getElementById('bm-panel');
+        if (!bookmarks.length) {
+            panel.innerHTML = `<div class="empty-state"><p>저장된 규정이 없습니다.</p></div>`;
+            return;
+        }
+        panel.innerHTML = bookmarks.map((b, i) => `
+            <div class="bm-card" onclick="quickAsk('${b.q.replace(/'/g, "\\'")}')">
+                <button class="bm-remove" onclick="event.stopPropagation(); removeBm(${i})">×</button>
+                <div class="bm-tag">#${b.tag}</div>
+                <div class="bm-q">❓ ${b.q}</div>
+                <div class="bm-a">${b.a}</div>
+                <div class="bm-date">${b.date}</div>
+            </div>
+        `).join('');
+    }
+
+    function removeBm(i) { bookmarks.splice(i, 1); localStorage.setItem('wb_bm', JSON.stringify(bookmarks)); renderBookmarks(); toast('제거되었습니다.'); }
+
+    function highlight(text, query) {
+        if (!query) return text;
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return text.replace(new RegExp(`(${escaped})`, 'gi'), '<span class="hl">$1</span>');
+    }
+
+    function renderChips() {
+        const chips = document.getElementById('chips');
+        if (!chips) return;
+        chips.innerHTML = '';
+        const tags = [...new Set(kb.flatMap(i => (i.tag || '').split(',').map(t => t.trim()).filter(Boolean)))].slice(0, 8);
+        tags.forEach(tag => {
+            const el = document.createElement('div');
+            el.className = 'chip';
+            el.innerText = `#${tag}`;
+            el.onclick = () => quickAsk(tag);
+            chips.appendChild(el);
+        });
+    }
+
+    function renderList() {
+        const allTags = [...new Set(kb.flatMap(i => (i.tag || '').split(',').map(t => t.trim()).filter(Boolean)))].sort();
+        const filterEl = document.getElementById('list-tags-filter');
+        if (!filterEl) return;
+        
+        filterEl.innerHTML = `<button class="tag-filter ${!listSelectedTag ? 'active' : ''}" onclick="filterByTag(null)">전체 (${kb.length})</button>`;
+        filterEl.innerHTML += allTags.map(tag => {
+            const count = kb.filter(i => (i.tag || '').includes(tag)).length;
+            return `<button class="tag-filter ${listSelectedTag === tag ? 'active' : ''}" onclick="filterByTag('${tag}')">#${tag} (${count})</button>`;
+        }).join('');
+
+        let filtered = listSelectedTag ? kb.filter(i => (i.tag || '').includes(listSelectedTag)) : kb;
+        if (document.getElementById('bookmark-only').checked) {
+            filtered = filtered.filter(i => bookmarks.some(b => b.q === i.q));
+        }
+
+        if (filtered.length === 0) {
+            document.getElementById('list-container').innerHTML = `<div class="empty-state"><p>해당하는 규정이 없습니다.</p></div>`;
+            document.getElementById('category-desc-box').innerHTML = '';
+            return;
+        }
+
+        const withPopularity = filtered.map(item => ({
+            item,
+            count: Object.entries(searchLogs).filter(([q]) => q === item.q).reduce((a, [,v]) => a + v, 0)
+        }));
+
+        let sorted = [...withPopularity];
+        if (listSortOrder === 'popular') sorted.sort((a, b) => b.count - a.count);
+        else if (listSortOrder === 'name') sorted.sort((a, b) => a.item.q.localeCompare(b.item.q, 'ko'));
+        else if (listSortOrder === 'recent') sorted.reverse();
+
+        const grouped = {};
+        sorted.forEach(({ item }) => {
+            const tags = (item.tag || '').split(',').map(t => t.trim()).filter(Boolean);
+            tags.forEach(tag => {
+                if (!grouped[tag]) grouped[tag] = [];
+                grouped[tag].push(item);
+            });
+        });
+
+        let html = '';
+        Object.keys(grouped).sort().forEach(tag => {
+            html += `<div class="list-group">
+                <div class="list-group-title">#${tag}</div>
+                ${grouped[tag].map(item => {
+                    const isBm = bookmarks.some(b => b.q === item.q);
+                    return `<div class="list-item" onclick="quickAsk('${item.q.replace(/'/g, "\\'")}')">
+                        <div class="list-item-content">
+                            <div class="list-item-q">❓ ${item.q} ${isBm ? '⭐' : ''}</div>
+                            <div class="list-item-tag">#${item.tag}</div>
+                        </div>
+                        <div class="list-item-arrow"><i data-lucide="chevron-right" style="width:16px;height:16px;"></i></div>
+                    </div>`;
+                }).join('')}
+            </div>`;
+        });
+        document.getElementById('list-container').innerHTML = html;
+        lucide.createIcons();
+    }
+
+    function filterByTag(tag) { listSelectedTag = tag; renderList(); }
+    function setSortOrder(order) { listSortOrder = order; document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active')); if(event) event.target.classList.add('active'); renderList(); }
+
+    function renderAdmin() {
+        const successCount = Object.values(searchLogs).reduce((a, b) => a + b, 0);
+        const rate = totalSearches > 0 ? Math.round(successCount / totalSearches * 100) : 0;
+
+        document.getElementById('s-kb').innerText = kb.length;
+        document.getElementById('s-missing').innerText = Object.keys(missingLogs).length;
+        document.getElementById('s-total').innerText = totalSearches;
+        document.getElementById('s-rate').innerText = rate + '%';
+
+        const logEl = document.getElementById('log-list');
+        const sorted = Object.entries(missingLogs).sort((a, b) => b[1] - a[1]);
+        
+        let feedbackHtml = '';
+        Object.entries(feedbackLogs).forEach(([q, fb]) => {
+            const total = fb.good + fb.bad;
+            const goodRate = total > 0 ? Math.round(fb.good / total * 100) : 0;
+            feedbackHtml += `<div class="log-item"><span style="flex:1;">${q}</span><span>👍${fb.good} 👎${fb.bad} (${goodRate}%)</span></div>`;
+        });
+        
+        if (feedbackHtml) logEl.innerHTML = feedbackHtml;
+        else logEl.innerHTML = sorted.length ? sorted.map(([q, c]) => `<div class="log-item"><span>${q}</span><span class="log-cnt">${c}회</span></div>`).join('') : `<div style="padding:16px;text-align:center;color:var(--muted);">미답변 없음 ✅</div>`;
+
+        drawTop(Object.entries(searchLogs).sort((a, b) => b[1] - a[1]).slice(0, 5));
+        const tagCount = {};
+        kb.forEach(i => (i.tag || '').split(',').map(t => t.trim()).filter(Boolean).forEach(t => tagCount[t] = (tagCount[t] || 0) + 1));
+        drawCat(Object.entries(tagCount).sort((a, b) => b[1] - a[1]).slice(0, 6));
+    }
+
+    function drawTop(data) {
+        const ctx = document.getElementById('chart-top').getContext('2d');
+        if (topChart) topChart.destroy();
+        if (!data.length) return;
+        topChart = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: data.map(d => d[0]), datasets: [{ data: data.map(d => d[1]), backgroundColor: ['#3b82f6','#60a5fa','#93c5fd','#bfdbfe','#dbeafe'], borderRadius: 6 }] },
+            options: { responsive: true, plugins: { legend: { display: false } } }
+        });
+    }
+
+    document.write(unescape('%3Cscript%20src%3D%22https%3A//cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js%22%3E%3C/script%3E'));
+
+    function drawCat(data) {
+        const ctx = document.getElementById('chart-cat').getContext('2d');
+        if (catChart) catChart.destroy();
+        if (!data.length) return;
+        catChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels: data.map(d => d[0]), datasets: [{ data: data.map(d => d[1]), backgroundColor: ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4'] }] },
+            options: { responsive: true }
+        });
+    }
+
+    function uploadFile(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => parseExcel(e.target.result, true);
+        reader.readAsArrayBuffer(file);
+    }
+
+    function parseExcel(data, manual = false) {
+        try {
+            const wb = XLSX.read(data, { type: 'array' });
+            const sheet = wb.Sheets[wb.SheetNames[0]];
+            const json = XLSX.utils.sheet_to_json(sheet);
+            kb = json.map(row => ({
+                q: row['질문(Question)'] || row['질문'] || '',
+                a: row['답변(Answer)'] || row['답변'] || '',
+                tag: row['관련 태그'] || row['태그'] || '일반',
+                desc: row['카테고리 설명'] || row['설명'] || ''
+            })).filter(i => i.q && i.a);
+            
+            localStorage.setItem('wb_kb', JSON.stringify(kb));
+            initFuseIndex();
+            renderChips();
+            if (manual) { toast(`✅ 업데이트 완료! (${kb.length}건)`); setTimeout(() => location.reload(), 1500); }
+        } catch(e) {
+            console.error("엑셀 파일 데이터 해석 실패:", e);
+        }
+    }
+
+    function resetMissing() { if (confirm('초기화할까요?')) { missingLogs = {}; localStorage.setItem('wb_missing', '{}'); renderAdmin(); } }
+    function resetSearch() { if (confirm('초기화할까요?')) { searchLogs = {}; totalSearches = 0; localStorage.setItem('wb_search', '{}'); localStorage.setItem('wb_total', '0'); renderAdmin(); } }
+    function resetAll() { if (confirm('⚠️ 전체 삭제할까요?')) { localStorage.clear(); location.reload(); } }
+
+    function toast(msg) {
+        const el = document.getElementById('toast');
+        if (el) { el.innerText = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2000); }
+    }
+</script>
+</body>
+</html>
