@@ -930,13 +930,10 @@
 <body>
 
 <div id="app">
-    <!-- 토스트 -->
     <div class="toast" id="toast"></div>
 
-    <!-- 자동완성 -->
     <div class="autocomplete" id="autocomplete"></div>
 
-    <!-- 헤더 -->
     <div class="header">
         <div class="header-left">
             <div class="avatar">
@@ -968,15 +965,11 @@
         </div>
     </div>
 
-    <!-- 메인 콘텐츠 -->
     <div class="main">
-        <!-- 카테고리 칩 (채팅 모드만 표시) -->
         <div class="chips" id="chips"></div>
 
-        <!-- 채팅창 -->
         <div class="chat" id="chat"></div>
 
-        <!-- 목록 패널 -->
         <div id="list-panel">
             <div id="list-tags-filter" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border);"></div>
             <div class="advanced-filters">
@@ -997,11 +990,9 @@
             <div id="list-container"></div>
         </div>
 
-        <!-- 즐겨찾기 패널 -->
         <div id="bm-panel"></div>
     </div>
 
-    <!-- 입력창 -->
     <div class="input-area" id="input-area">
         <div class="input-row">
             <input type="text" id="user-input" placeholder="질문을 입력하세요..." oninput="onInput(this)" onkeypress="if(event.keyCode===13) send()">
@@ -1011,9 +1002,6 @@
         </div>
     </div>
 
-    <!-- 자동완성 -->
-
-    <!-- 관리자 오버레이 -->
     <div class="overlay" id="admin-overlay">
         <div class="overlay-title">
             <i data-lucide="settings" style="width:20px;height:20px;"></i>
@@ -1057,7 +1045,6 @@
         </div>
     </div>
 
-    <!-- 도움말 오버레이 -->
     <div class="overlay" id="help-overlay">
         <div class="overlay-title">
             <i data-lucide="book-open" style="width:20px;height:20px;"></i>
@@ -1142,7 +1129,7 @@
         }
 
         const githubUser = 'lee610908';
-        const githubRepo = 'wibot';
+        const githubRepo = 'insabot'; // 고정 주소 경로 교정 수정 완료
         const fileUrl = `https://raw.githubusercontent.com/${githubUser}/${githubRepo}/main/rules.xlsx`;
         if (!savedKb) {
             fetch(fileUrl).then(r => r.arrayBuffer()).then(buf => parseExcel(buf)).catch(() => {});
@@ -1167,8 +1154,16 @@
         const chat = document.getElementById('chat');
         chat.innerHTML = '';
         chatHistory.forEach(msg => {
-            addMsg(msg.role, msg.text);
+            const time = msg.time || new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            chat.insertAdjacentHTML('beforeend', `
+                <div class="msg ${msg.role}">
+                    <div class="bubble">${msg.text}</div>
+                    <span class="msg-time">${time}</span>
+                </div>
+            `);
         });
+        setTimeout(() => { chat.scrollTop = chat.scrollHeight; }, 0);
+        lucide.createIcons();
     }
 
     // ===== 테마 =====
@@ -1177,6 +1172,7 @@
         setTheme(current === 'dark' ? 'light' : 'dark');
     }
 
+    // 테마 설정
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('wb_theme', theme);
@@ -1237,6 +1233,7 @@
         if (confirm('⚠️ 채팅 기록을 모두 삭제하시겠습니까?')) {
             chatHistory = [];
             localStorage.setItem('wb_chat', '[]');
+            document.getElementById('chat').innerHTML = '';
             showGuide();
             toast('🗑️ 채팅이 초기화되었습니다.');
         }
@@ -1272,27 +1269,23 @@
 
     // ===== 가이드 =====
     function showGuide() {
-        const chat = document.getElementById('chat');
-        chat.innerHTML = `
-            <div class="msg bot">
-                <div class="bubble">
-                    반갑습니다! <b>인사업무봇</b>입니다. 🤖<br>
-                    자주 묻는 질문을 클릭하거나 직접 입력해 보세요!
-                    <div class="guide-list">
-                        <button class="guide-btn" onclick="quickAsk('신인 등록 자격')">
-                            <i data-lucide="user-check" style="width:13px;height:13px;"></i> 신인 등록 자격이 궁금해요
-                        </button>
-                        <button class="guide-btn" onclick="quickAsk('이직 횟수 제한')">
-                            <i data-lucide="alert-circle" style="width:13px;height:13px;"></i> 이직 횟수 제한이 있나요?
-                        </button>
-                        <button class="guide-btn" onclick="quickAsk('재입사 기준')">
-                            <i data-lucide="refresh-cw" style="width:13px;height:13px;"></i> 퇴사 후 재입사 기준은?
-                        </button>
-                    </div>
-                </div>
+        const welcomeText = `
+            반갑습니다! <b>인사업무봇</b>입니다. 🤖<br>
+            자주 묻는 질문을 클릭하거나 직접 입력해 보세요!
+            <div class="guide-list">
+                <button class="guide-btn" onclick="quickAsk('신인 등록 자격')">
+                    <i data-lucide="user-check" style="width:13px;height:13px;"></i> 신인 등록 자격이 궁금해요
+                </button>
+                <button class="guide-btn" onclick="quickAsk('이직 횟수 제한')">
+                    <i data-lucide="alert-circle" style="width:13px;height:13px;"></i> 이직 횟수 제한이 있나요?
+                </button>
+                <button class="guide-btn" onclick="quickAsk('재입사 기준')">
+                    <i data-lucide="refresh-cw" style="width:13px;height:13px;"></i> 퇴사 후 재입사 기준은?
+                </button>
             </div>
         `;
-        lucide.createIcons();
+        // 정식 내장 기능으로 백업 연동 및 렌더링 지원
+        addMsg('bot', welcomeText);
     }
 
     function quickAsk(text) {
@@ -1449,34 +1442,42 @@
         const hlA = query ? highlight(item.a, query) : item.a;
         const hlQ = query ? highlight(item.q, query) : item.q;
 
-        chat.insertAdjacentHTML('beforeend', `
-            <div class="msg bot" id="${id}">
-                <div class="bubble">${text}</div>
-                <div class="card">
-                    <div class="card-tag">#${item.tag}</div>
-                    <div class="card-body">
-                        <div class="card-q">❓ ${hlQ}</div>
-                        <div class="card-a">${hlA}</div>
-                        <div class="card-actions">
-                            <div class="feedback">
-                                <button class="fb-btn" onclick="recordFeedback('${item.q}', true)">
-                                    <i data-lucide="thumbs-up" style="width:11px;height:11px;"></i> 도움됨
-                                </button>
-                                <button class="fb-btn" onclick="recordFeedback('${item.q}', false)">
-                                    <i data-lucide="thumbs-down" style="width:11px;height:11px;"></i> 부족함
-                                </button>
-                            </div>
-                            <div class="action-btns">
-                                <button class="action-btn" id="copy-${id}" onclick="copyCard('${id}', \`${item.q.replace(/`/g,'\\`')}\`, \`${item.a.replace(/`/g,'\\`')}\`)">
-                                    <i data-lucide="copy" style="width:11px;height:11px;"></i> 복사
-                                </button>
-                                <button class="action-btn ${isBm ? 'saved' : ''}" id="bm-${id}" onclick="toggleBm('${id}', \`${item.q.replace(/`/g,'\\`')}\`, \`${item.a.replace(/`/g,'\\`')}\`, \`${item.tag.replace(/`/g,'\\`')}\`)">
-                                    <i data-lucide="star" style="width:11px;height:11px;"></i> ${isBm ? '저장됨' : '저장'}
-                                </button>
-                            </div>
+        const cardInnerHtml = `
+            <div class="bubble">${text}</div>
+            <div class="card">
+                <div class="card-tag">#${item.tag}</div>
+                <div class="card-body">
+                    <div class="card-q">❓ ${hlQ}</div>
+                    <div class="card-a">${hlA}</div>
+                    <div class="card-actions">
+                        <div class="feedback">
+                            <button class="fb-btn" onclick="recordFeedback('${item.q}', true)">
+                                <i data-lucide="thumbs-up" style="width:11px;height:11px;"></i> 도움됨
+                            </button>
+                            <button class="fb-btn" onclick="recordFeedback('${item.q}', false)">
+                                <i data-lucide="thumbs-down" style="width:11px;height:11px;"></i> 부족함
+                            </button>
+                        </div>
+                        <div class="action-btns">
+                            <button class="action-btn" id="copy-${id}" onclick="copyCard('${id}', \`${item.q.replace(/`/g,'\\`')}\`, \`${item.a.replace(/`/g,'\\`')}\`)">
+                                <i data-lucide="copy" style="width:11px;height:11px;"></i> 복사
+                            </button>
+                            <button class="action-btn ${isBm ? 'saved' : ''}" id="bm-${id}" onclick="toggleBm('${id}', \`${item.q.replace(/`/g,'\\`')}\`, \`${item.a.replace(/`/g,'\\`')}\`, \`${item.tag.replace(/`/g,'\\`')}\`)">
+                                <i data-lucide="star" style="width:11px;height:11px;"></i> ${isBm ? '저장됨' : '저장'}
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
+        `;
+
+        // 답변 카드 디자인 레이아웃 이력 백업 연동 적용
+        chatHistory.push({ role: 'bot', text: cardInnerHtml, time });
+        localStorage.setItem('wb_chat', JSON.stringify(chatHistory));
+
+        chat.insertAdjacentHTML('beforeend', `
+            <div class="msg bot" id="${id}">
+                ${cardInnerHtml}
                 <span class="msg-time">${time}</span>
             </div>
         `);
@@ -1486,7 +1487,7 @@
         lucide.createIcons();
     }
 
-    // ===== 복사 =====
+    // ===== 피드백 =====
     function recordFeedback(question, isPositive) {
         if (!feedbackLogs[question]) {
             feedbackLogs[question] = { good: 0, bad: 0 };
@@ -1529,7 +1530,7 @@
     }
 
     function updateBmCount() {
-        // 필요한 경우 다른 처리
+        // 필요한 경우 처리
     }
 
     function renderBookmarks() {
